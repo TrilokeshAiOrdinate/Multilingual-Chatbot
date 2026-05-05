@@ -1,0 +1,304 @@
+# ============================================================================
+# PYTHON
+# ============================================================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# ============================================================================
+# IDE & EDITOR
+# ============================================================================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+.vs/
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ============================================================================
+# OPERATING SYSTEM
+# ============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+.directory
+
+# ============================================================================
+# PROJECT SPECIFIC
+# ============================================================================
+
+# Environment configuration files
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# API Keys and Secrets (should never be committed)
+secrets.json
+secrets.yaml
+credentials.json
+credentials.yaml
+*.key
+*.pem
+
+# Local development data
+*.sqlite
+*.sqlite3
+*.db
+*.pickle
+*.pkl
+
+# Azure Cache and Logs
+.azure/
+azure-logs/
+*.azurePubxml
+PublishSettings/
+
+# Local Search Index Cache
+.search-cache/
+search_index.cache
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+
+# Large data files (keep local, don't push to remote)
+# Uncomment if needed:
+# legal_dictionary*.json
+# *.embeddings
+# *.index
+
+# ============================================================================
+# DEPENDENCIES & PACKAGES
+# ============================================================================
+
+# pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Poetry
+poetry.lock
+
+# pipenv
+Pipfile.lock
+
+# ============================================================================
+# TESTING
+# ============================================================================
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# tox
+.tox/
+
+# ============================================================================
+# BUILD & DIST
+# ============================================================================
+
+# Build directories
+build/
+dist/
+*.egg-info/
+
+# ============================================================================
+# DOCUMENTATION
+# ============================================================================
+
+# Generated docs
+docs/_build/
+site/
+
+# ============================================================================
+# LOGS
+# ============================================================================
+
+# Application logs
+logs/
+*.log
+*.log.*
+
+# ============================================================================
+# CI/CD
+# ============================================================================
+
+# GitHub Actions
+.github/workflows/
+.github/actions/
+
+# Jenkins
+.jenkins/
+
+# GitLab CI
+.gitlab-ci.yml
+
+# ============================================================================
+# MISC
+# ============================================================================
+
+# OS specific
+.env.sample
+.env.example
+TODO.txt
+
+# Keep these files - uncomment to exclude:
+# !.gitkeep
+# !.github/
+# !requirements.txt
