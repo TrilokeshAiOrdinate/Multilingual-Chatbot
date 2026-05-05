@@ -280,7 +280,7 @@ logs/
 # ============================================================================
 
 # GitHub Actions
-.github/workflows/
+
 .github/actions/
 
 # Jenkins
