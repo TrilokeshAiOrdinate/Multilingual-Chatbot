@@ -100,7 +100,8 @@ class ResponseGenerator:
                         "content": generator_prompt
                     }
                 ],
-                max_completion_tokens=2000
+                # max_completion_tokens=2000
+                max_tokens=2000
             )
             
             # Extract response

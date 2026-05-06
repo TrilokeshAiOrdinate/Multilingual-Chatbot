@@ -77,7 +77,8 @@ class LLMRouter:
                         "content": user_prompt
                     }
                 ],
-                max_completion_tokens=500
+                # max_completion_tokens=500
+                max_tokens=500
             )
             
             # Extract response
