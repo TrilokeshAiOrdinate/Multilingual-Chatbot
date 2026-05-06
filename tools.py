@@ -12,11 +12,25 @@ from typing import Dict, List, Any, Optional
 from abc import ABC, abstractmethod
 from dotenv import load_dotenv
 
+# Import MasterDB hybrid search directly
+try:
+    from masterdb_aisearch.azure_search import hybrid_search as masterdb_hybrid_search
+    from masterdb_aisearch.embeddings import get_embedding
+except ImportError:
+    from masterdb_aisearch.azure_search import hybrid_search as masterdb_hybrid_search
+    from masterdb_aisearch.embeddings import get_embedding
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 load_dotenv()
+
+# =============================================================================
+# CONFIGURATION CONSTANTS
+# =============================================================================
+
+# Removed MASTERDB_ENDPOINT - now using direct imports
 
 
 # =============================================================================
@@ -229,10 +243,10 @@ class MasterDBTool(BaseTool):
     """
     Tool for searching historical cases, precedents, and case law
     Searches the MasterDB via API endpoint using hybrid search.
+    Uses direct import of hybrid_search from MasterDB Azure Search module.
     
-    NOTE: This tool calls the MasterDB API endpoint directly
-    instead of importing functions. This ensures separation of concerns
-    and allows MasterDB to run as an independent microservice.
+    NOTE: This tool now imports functions directly instead of making HTTP calls,
+    eliminating the need for a separate microservice.
     """
     
     def __init__(self):
@@ -240,13 +254,11 @@ class MasterDBTool(BaseTool):
             name="MASTERDB",
             description="Search Indian central/state acts and legal knowledge base"
         )
-        # MasterDB API URL - defaults to localhost if not configured
-        self.masterdb_api_url = os.getenv("MASTERDB_API_URL", "http://localhost:8001")
-        logger.info(f"[MASTERDB] Configured API URL: {self.masterdb_api_url}")
+        logger.info("[MASTERDB] Initialized with direct Azure Search integration")
     
     def search(self, query: str, top_k: Optional[int] = None, **kwargs) -> Dict[str, Any]:
         """
-        Search MasterDB via API endpoint for Indian legal documents using hybrid search.
+        Search MasterDB directly for Indian legal documents using hybrid search.
         
         Args:
             query: Search query for legal documents
@@ -256,70 +268,30 @@ class MasterDBTool(BaseTool):
             Legal documents from the MasterDB search
         """
         try:
-            logger.info(f"[{self.name}] Searching via API for: {query}")
-            logger.info(f"[{self.name}] API Endpoint: {self.masterdb_api_url}/search")
+            logger.info(f"[{self.name}] Searching for: {query}")
             
-            # Build the API request
-            params = {"query": query}
+            # Generate query embedding
+            query_embedding = get_embedding(query)
+            
+            # Determine top_k if not provided
             if top_k is None:
                 top_k = self._default_top_k(query)
-            if top_k is not None:
-                params["top_k"] = top_k
             
-            # Call the MasterDB API endpoint
-            response = requests.get(
-                f"{self.masterdb_api_url}/search",
-                params=params,
-                timeout=30
-            )
-            response.raise_for_status()
+            # Call hybrid_search directly
+            logger.info(f"[{self.name}] Calling hybrid search with top_k={top_k}")
+            results = masterdb_hybrid_search(query, query_embedding, top_k=top_k)
             
-            api_response = response.json()
-            
-            # Extract results from API response
-            results = api_response.get("results", [])
-            
-            logger.info(f"[{self.name}] API returned {len(results)} results")
-            
-            # Format results
-            formatted_results = [
-                {
-                    "id": result.get("id", ""),
-                    "act": result.get("act", ""),
-                    "jurisdiction": result.get("jurisdiction", ""),
-                    "doc_id": result.get("doc_id", ""),
-                    "date": result.get("date", ""),
-                    "translated": result.get("translated"),
-                    "score": result.get("score", 0),
-                    "text": result.get("text", "")
-                }
-                for result in results
-            ]
+            logger.info(f"[{self.name}] Search returned {len(results)} results")
             
             return {
                 "tool": self.name,
                 "status": "success",
                 "query": query,
-                "count": len(formatted_results),
-                "data": formatted_results,
-                "source": "MasterDB API",
-                "search_method": "Hybrid keyword + vector search with metadata filters",
-                "api_response_time": api_response.get("search_time_sec", "N/A")
+                "count": len(results),
+                "data": results,
+                "source": "MasterDB Direct Search",
+                "search_method": "Hybrid keyword + vector search with metadata filters"
             }
-        
-        except requests.exceptions.ConnectionError as e:
-            logger.error(f"[{self.name}] Connection error - API unreachable at {self.masterdb_api_url}")
-            logger.error(f"[{self.name}] Error: {str(e)}")
-            return self.format_error(f"MasterDB API unreachable at {self.masterdb_api_url}. Make sure it's running.")
-        
-        except requests.exceptions.Timeout as e:
-            logger.error(f"[{self.name}] Request timeout after 30 seconds")
-            return self.format_error("MasterDB API request timed out")
-        
-        except requests.exceptions.HTTPError as e:
-            logger.error(f"[{self.name}] HTTP error from API: {str(e)}")
-            return self.format_error(f"MasterDB API error: {response.text}")
-        
         except Exception as e:
             logger.error(f"[{self.name}] Search failed: {str(e)}")
             return self.format_error(f"MasterDB search failed: {str(e)}")
