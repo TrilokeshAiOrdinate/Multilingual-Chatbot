@@ -250,7 +250,7 @@ class ResponseFormatter:
         disclaimer = f"""
 
 ---
-**Important Disclaimer:**
+<b>Important Disclaimer:</b>
 This response is based on data from: {', '.join(tool_names)}
 This is not a substitute for professional legal advice. 
 Please consult with a qualified legal professional for legal matters.
