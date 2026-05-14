@@ -166,8 +166,17 @@ IMPORTANT INSTRUCTIONS:
 FORMATTING INSTRUCTIONS (CRITICAL):
 - Use HTML <b> tags for bold headings and emphasis: <b>Example</b>
 - Use HTML <i> tags for italic text: <i>Example</i>
+- Use HTML <br> tags for line breaks instead of newlines
 - NEVER use markdown formatting (**, __, *, _)
-- All text styling must use HTML tags only
+- NEVER use newlines (\n) - use <br> tags instead
+- All text styling and formatting must use HTML tags only
+
+Example Format:
+<b>Section Title</b><br>
+First paragraph content.<br>
+<br>
+<b>Another Section</b><br>
+More content here.
 
 If you cannot answer the query from the provided data:
 - Acknowledge what information IS available

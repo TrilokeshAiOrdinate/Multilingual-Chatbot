@@ -210,9 +210,20 @@ class ResponseFormatter:
         return re.sub(r"\n{3,}", "\n\n", response).strip()
     
     @staticmethod
+    def convert_newlines_to_br(response: str) -> str:
+        """Convert all newlines to HTML <br> tags for consistent HTML formatting"""
+        # Replace multiple newlines with <br><br>
+        response = re.sub(r"\n\n+", "<br><br>", response)
+        # Replace single newlines with <br>
+        response = re.sub(r"\n", "<br>", response)
+        return response
+    
+    @staticmethod
     def format_markdown(response: str) -> str:
-        """Format response as markdown"""
-        return ResponseFormatter.strip_source_labels(response)
+        """Format response as HTML with <br> tags instead of newlines"""
+        response = ResponseFormatter.strip_source_labels(response)
+        response = ResponseFormatter.convert_newlines_to_br(response)
+        return response
     
     @staticmethod
     def format_json(
@@ -221,10 +232,12 @@ class ResponseFormatter:
         tools_used: List[str],
         status: str = "success"
     ) -> str:
-        """Format response as JSON"""
+        """Format response as JSON with HTML formatting"""
+        response = ResponseFormatter.strip_source_labels(response)
+        response = ResponseFormatter.convert_newlines_to_br(response)
         data = {
             "query": query,
-            "response": ResponseFormatter.strip_source_labels(response),
+            "response": response,
             "sources": tools_used,
             "status": status
         }
@@ -234,11 +247,12 @@ class ResponseFormatter:
     def format_html(response: str) -> str:
         """Format response as HTML"""
         response = ResponseFormatter.strip_source_labels(response)
+        response = ResponseFormatter.convert_newlines_to_br(response)
         # Simple HTML formatting
         html = f"""
         <div class="legal-response">
             <div class="response-content">
-                {response.replace(chr(10), '<br>')}
+                {response}
             </div>
         </div>
         """
@@ -246,15 +260,8 @@ class ResponseFormatter:
     
     @staticmethod
     def add_disclaimer(response: str, tool_names: List[str]) -> str:
-        """Add legal disclaimer to response"""
-        disclaimer = f"""
-
----
-<b>Important Disclaimer:</b>
-This response is based on data from: {', '.join(tool_names)}
-This is not a substitute for professional legal advice. 
-Please consult with a qualified legal professional for legal matters.
-"""
+        """Add legal disclaimer to response with HTML formatting"""
+        disclaimer = f"""<br><br>---<br><b>Important Disclaimer:</b><br>This response is based on data from: {', '.join(tool_names)}<br>This is not a substitute for professional legal advice.<br>Please consult with a qualified legal professional for legal matters."""
         return response + disclaimer
 
 
